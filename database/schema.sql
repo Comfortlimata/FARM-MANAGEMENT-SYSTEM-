@@ -12,8 +12,19 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- --------------------------------------------------------
 -- MODULE: Inventory
--- Add inventory-related tables here
 -- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS inventory_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    category ENUM('seed','fertilizer','chemical','feed','veterinary','packaging','fuel','tool','other') NOT NULL,
+    unit VARCHAR(50),
+    quantity DECIMAL(10,2) NOT NULL DEFAULT 0,
+    reorder_level DECIMAL(10,2) NOT NULL DEFAULT 0,
+    expiry_date DATE DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 -- --------------------------------------------------------
 -- MODULE: Equipment
