@@ -120,5 +120,13 @@ input:focus, select:focus { outline: 2px solid #2d6a2d; border-color: transparen
     color: #c0392b;
 }
 
+/* Status badges */
+.badge-ok   { background: #2d6a2d; color: #fff; font-size: 0.7rem; padding: 0.15rem 0.45rem; border-radius: 3px; font-weight: 600; }
+.badge-warn { background: #e67e22; color: #fff; font-size: 0.7rem; padding: 0.15rem 0.45rem; border-radius: 3px; font-weight: 600; }
+
+/* Textarea */
+textarea { padding: 0.5rem 0.7rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; font-family: inherit; resize: vertical; }
+textarea:focus { outline: 2px solid #2d6a2d; border-color: transparent; }
+
 /* Empty state */
 .empty { color: #777; margin-top: 1rem; }

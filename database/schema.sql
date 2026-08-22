@@ -28,8 +28,20 @@ CREATE TABLE IF NOT EXISTS inventory_items (
 
 -- --------------------------------------------------------
 -- MODULE: Equipment
--- Add equipment-related tables here
 -- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS equipment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    type ENUM('tractor','harvester','irrigation','sprayer','vehicle','hand_tool','power_tool','other') NOT NULL,
+    status ENUM('operational','under_maintenance','out_of_service') NOT NULL DEFAULT 'operational',
+    purchase_date DATE DEFAULT NULL,
+    last_service_date DATE DEFAULT NULL,
+    next_service_date DATE DEFAULT NULL,
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 -- --------------------------------------------------------
 -- MODULE: Labour
