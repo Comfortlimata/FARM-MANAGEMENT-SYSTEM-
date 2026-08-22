@@ -27,7 +27,7 @@ if ($action === 'delete' && isset($_GET['id'])) {
     mysqli_stmt_bind_param($stmt, 'i', $_GET['id']);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header('Location: /inventory/');
+    header('Location: /FARM-MANAGEMENT-SYSTEM-/inventory/');
     exit;
 }
 
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($action, ['add','edit'])) 
 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        header('Location: /inventory/');
+        header('Location: /FARM-MANAGEMENT-SYSTEM-/inventory/');
         exit;
     }
 
@@ -145,7 +145,7 @@ require_once '../includes/header.php';
 
     <div class="page-header">
         <h2><?= $action === 'add' ? 'Add New Item' : 'Edit Item' ?></h2>
-        <a href="/inventory/" class="btn btn-secondary">← Back</a>
+        <a href="/FARM-MANAGEMENT-SYSTEM-/inventory/" class="btn btn-secondary">← Back</a>
     </div>
 
     <?php if ($errors): ?>
