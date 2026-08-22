@@ -1,0 +1,17 @@
+# PHP
+*.log
+/vendor/
+
+# Config (never commit real credentials)
+includes/config.php
+
+# Dependencies
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
