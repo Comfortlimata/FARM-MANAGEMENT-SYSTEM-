@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farm Management System</title>
-    <link rel="stylesheet" href="/FARM-MANAGEMENT-SYSTEM-/assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 <nav>
-    <a href="/FARM-MANAGEMENT-SYSTEM-/inventory/">Inventory</a>
-    <a href="/FARM-MANAGEMENT-SYSTEM-/equipment/">Equipment</a>
-    <a href="/FARM-MANAGEMENT-SYSTEM-/labour/">Labour</a>
-    <a href="/FARM-MANAGEMENT-SYSTEM-/pest-disease/">Pest &amp; Disease</a>
-    <a href="/FARM-MANAGEMENT-SYSTEM-/weather/">Weather</a>
-    <a href="/FARM-MANAGEMENT-SYSTEM-/harvest/">Harvest</a>
+    <a href="../inventory/">Inventory</a>
+    <a href="../equipment/">Equipment</a>
+    <a href="../labour/">Labour</a>
+    <a href="../pest-disease/">Pest &amp; Disease</a>
+    <a href="../weather/">Weather</a>
+    <a href="../harvest/">Harvest</a>
 </nav>
