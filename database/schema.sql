@@ -82,8 +82,21 @@ CREATE TABLE IF NOT EXISTS pest_disease (
 
 -- --------------------------------------------------------
 -- MODULE: Weather
--- Add weather-related tables here
 -- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS weather (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    record_date DATE NOT NULL,
+    temperature_min DECIMAL(5,2) DEFAULT NULL,
+    temperature_max DECIMAL(5,2) DEFAULT NULL,
+    rainfall_mm DECIMAL(7,2) DEFAULT NULL,
+    humidity_percent DECIMAL(5,2) DEFAULT NULL,
+    wind_speed_kmh DECIMAL(6,2) DEFAULT NULL,
+    condition ENUM('sunny','cloudy','rainy','stormy','windy','foggy','other') NOT NULL DEFAULT 'sunny',
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 -- --------------------------------------------------------
 -- MODULE: Harvest
