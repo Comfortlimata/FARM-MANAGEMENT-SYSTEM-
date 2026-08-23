@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS weather (
     rainfall_mm DECIMAL(7,2) DEFAULT NULL,
     humidity_percent DECIMAL(5,2) DEFAULT NULL,
     wind_speed_kmh DECIMAL(6,2) DEFAULT NULL,
-    condition ENUM('sunny','cloudy','rainy','stormy','windy','foggy','other') NOT NULL DEFAULT 'sunny',
+    weather_condition ENUM('sunny','cloudy','rainy','stormy','windy','foggy','other') NOT NULL DEFAULT 'sunny',
     notes TEXT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

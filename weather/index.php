@@ -44,7 +44,7 @@ if ($action === 'delete' && isset($_GET['id'])) {
 
 $errors = [];
 $item = ['id'=>'','record_date'=>'','temperature_min'=>'','temperature_max'=>'',
-         'rainfall_mm'=>'','humidity_percent'=>'','wind_speed_kmh'=>'','condition'=>'sunny','notes'=>''];
+         'rainfall_mm'=>'','humidity_percent'=>'','wind_speed_kmh'=>'','weather_condition'=>'sunny','notes'=>''];
 
 if ($action === 'edit' && isset($_GET['id'])) {
     $stmt = mysqli_prepare($conn, 'SELECT * FROM weather WHERE id = ?');
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($action, ['add','edit'])) 
         'rainfall_mm'      => trim($_POST['rainfall_mm'] ?? ''),
         'humidity_percent' => trim($_POST['humidity_percent'] ?? ''),
         'wind_speed_kmh'   => trim($_POST['wind_speed_kmh'] ?? ''),
-        'condition'        => $_POST['condition'] ?? 'sunny',
+        'weather_condition' => $_POST['weather_condition'] ?? 'sunny',
         'notes'            => trim($_POST['notes'] ?? ''),
     ];
     $errors = validate_weather($p);
@@ -79,17 +79,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($action, ['add','edit'])) 
 
         if ($action === 'add') {
             $stmt = mysqli_prepare($conn,
-                'INSERT INTO weather (record_date, temperature_min, temperature_max, rainfall_mm, humidity_percent, wind_speed_kmh, condition, notes)
+                'INSERT INTO weather (record_date, temperature_min, temperature_max, rainfall_mm, humidity_percent, wind_speed_kmh, weather_condition, notes)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
             mysqli_stmt_bind_param($stmt, 'sdddddss',
-                $p['record_date'], $tmin, $tmax, $rain, $hum, $wind, $p['condition'], $notes);
+                $p['record_date'], $tmin, $tmax, $rain, $hum, $wind, $p['weather_condition'], $notes);
         } else {
             $id = (int)($_POST['id'] ?? 0);
             $stmt = mysqli_prepare($conn,
                 'UPDATE weather SET record_date=?, temperature_min=?, temperature_max=?, rainfall_mm=?,
-                 humidity_percent=?, wind_speed_kmh=?, condition=?, notes=? WHERE id=?');
+                 humidity_percent=?, wind_speed_kmh=?, weather_condition=?, notes=? WHERE id=?');
             mysqli_stmt_bind_param($stmt, 'sdddddssi',
-                $p['record_date'], $tmin, $tmax, $rain, $hum, $wind, $p['condition'], $notes, $id);
+                $p['record_date'], $tmin, $tmax, $rain, $hum, $wind, $p['weather_condition'], $notes, $id);
         }
 
         mysqli_stmt_execute($stmt);
@@ -141,9 +141,9 @@ require_once '../includes/header.php';
         ];
         foreach ($items as $row):
         ?>
-            <tr class="<?= $row['condition'] === 'stormy' ? 'low-stock' : '' ?>">
+            <tr class="<?= $row['weather_condition'] === 'stormy' ? 'low-stock' : '' ?>">
                 <td><?= h($row['record_date']) ?></td>
-                <td><span class="<?= $condition_badge[$row['condition']] ?>"><?= ucfirst(h($row['condition'])) ?></span></td>
+                <td><span class="<?= $condition_badge[$row['weather_condition']] ?>"><?= ucfirst(h($row['weather_condition'])) ?></span></td>
                 <td><?= $row['temperature_min'] !== null ? h($row['temperature_min']) : '—' ?></td>
                 <td><?= $row['temperature_max'] !== null ? h($row['temperature_max']) : '—' ?></td>
                 <td><?= $row['rainfall_mm']      !== null ? h($row['rainfall_mm'])     : '—' ?></td>
@@ -184,9 +184,9 @@ require_once '../includes/header.php';
         </label>
 
         <label>Condition
-            <select name="condition">
+            <select name="weather_condition">
                 <?php foreach ($conditions as $c): ?>
-                    <option value="<?= $c ?>" <?= $item['condition'] === $c ? 'selected' : '' ?>><?= ucfirst($c) ?></option>
+                    <option value="<?= $c ?>" <?= $item['weather_condition'] === $c ? 'selected' : '' ?>><?= ucfirst($c) ?></option>
                 <?php endforeach ?>
             </select>
         </label>
