@@ -63,8 +63,22 @@ CREATE TABLE IF NOT EXISTS labour (
 
 -- --------------------------------------------------------
 -- MODULE: Pest & Disease
--- Add pest and disease-related tables here
 -- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS pest_disease (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    type ENUM('pest','disease') NOT NULL,
+    affected_crop VARCHAR(150) NOT NULL,
+    severity ENUM('low','medium','high','critical') NOT NULL DEFAULT 'low',
+    date_observed DATE NOT NULL,
+    treatment VARCHAR(255) DEFAULT NULL,
+    treatment_date DATE DEFAULT NULL,
+    status ENUM('active','treated','resolved') NOT NULL DEFAULT 'active',
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 -- --------------------------------------------------------
 -- MODULE: Weather
