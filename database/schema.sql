@@ -45,8 +45,21 @@ CREATE TABLE IF NOT EXISTS equipment (
 
 -- --------------------------------------------------------
 -- MODULE: Labour
--- Add labour-related tables here
 -- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS labour (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    worker_name VARCHAR(150) NOT NULL,
+    role ENUM('permanent','casual','contractor') NOT NULL DEFAULT 'casual',
+    task VARCHAR(200) NOT NULL,
+    work_date DATE NOT NULL,
+    hours_worked DECIMAL(5,2) NOT NULL DEFAULT 0,
+    hourly_rate DECIMAL(10,2) NOT NULL DEFAULT 0,
+    total_pay DECIMAL(10,2) GENERATED ALWAYS AS (hours_worked * hourly_rate) STORED,
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
 -- --------------------------------------------------------
 -- MODULE: Pest & Disease
