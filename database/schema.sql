@@ -100,5 +100,19 @@ CREATE TABLE IF NOT EXISTS weather (
 
 -- --------------------------------------------------------
 -- MODULE: Harvest
--- Add harvest-related tables here
 -- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS harvest (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    crop_name VARCHAR(150) NOT NULL,
+    variety VARCHAR(150) DEFAULT NULL,
+    field_location VARCHAR(150) DEFAULT NULL,
+    harvest_date DATE NOT NULL,
+    quantity DECIMAL(10,2) NOT NULL DEFAULT 0,
+    unit VARCHAR(50) NOT NULL,
+    quality ENUM('excellent','good','fair','poor') NOT NULL DEFAULT 'good',
+    storage_location VARCHAR(150) DEFAULT NULL,
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
