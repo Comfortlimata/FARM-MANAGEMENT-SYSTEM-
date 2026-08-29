@@ -181,6 +181,8 @@ CREATE TABLE IF NOT EXISTS purchase_orders (
 -- --------------------------------------------------------
 -- MODULE: Harvest
 -- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS harvest (
     id INT AUTO_INCREMENT PRIMARY KEY,
     crop_name VARCHAR(150) NOT NULL,
     variety VARCHAR(150) DEFAULT NULL,

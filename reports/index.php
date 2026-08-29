@@ -1,8 +1,5 @@
 <?php
-session_start();
-require_once '../includes/auth.php';
 require_once '../includes/db.php';
-require_login();
 
 function h($s) { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 
