@@ -21,6 +21,7 @@ $_user = current_user();
     <a href="finances/">Finances</a>
     <a href="sales/">Sales</a>
     <a href="suppliers/">Suppliers</a>
+    <a href="reports/">Reports</a>
     <div class="nav-right">
         <span class="nav-user">👤 <?= htmlspecialchars($_user['name'], ENT_QUOTES, 'UTF-8') ?> (<?= htmlspecialchars($_user['role'], ENT_QUOTES, 'UTF-8') ?>)</span>
         <a href="auth/logout.php" class="nav-logout">Logout</a>
