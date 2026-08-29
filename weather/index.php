@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/config.php';
 require_once '../includes/db.php';
+require_once '../includes/flash.php';
 
 $action     = $_GET['action'] ?? 'list';
 $conditions = ['sunny','cloudy','rainy','stormy','windy','foggy','other'];
@@ -36,6 +37,7 @@ if ($action === 'delete' && isset($_GET['id'])) {
     mysqli_stmt_bind_param($stmt, 'i', $_GET['id']);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    flash_set('success', 'Record deleted.');
     header('Location: ./');
     exit;
 }
@@ -94,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($action, ['add','edit'])) 
 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        flash_set('success', $action === 'add' ? 'Record added.' : 'Record updated.');
         header('Location: ./');
         exit;
     }
@@ -122,6 +125,7 @@ require_once '../includes/header.php';
         <h2>Weather</h2>
         <a href="?action=add" class="btn">+ Add Record</a>
     </div>
+    <?= flash_html() ?>
 
     <?php if (empty($items)): ?>
         <p class="empty">No weather records yet.</p>

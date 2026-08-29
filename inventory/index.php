@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/config.php';
 require_once '../includes/db.php';
+require_once '../includes/flash.php';
 
 $action = $_GET['action'] ?? 'list';
 $categories = ['seed','fertilizer','chemical','feed','veterinary','packaging','fuel','tool','other'];
@@ -27,6 +28,7 @@ if ($action === 'delete' && isset($_GET['id'])) {
     mysqli_stmt_bind_param($stmt, 'i', $_GET['id']);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    flash_set('success', 'Item deleted.');
     header('Location: ./');
     exit;
 }
@@ -78,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($action, ['add','edit'])) 
 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        flash_set('success', $action === 'add' ? 'Item added.' : 'Item updated.');
         header('Location: ./');
         exit;
     }
@@ -107,6 +110,8 @@ require_once '../includes/header.php';
         <h2>Inventory</h2>
         <a href="?action=add" class="btn">+ Add New Item</a>
     </div>
+
+    <?= flash_html() ?>
 
     <?php if (empty($items)): ?>
         <p class="empty">No inventory items yet.</p>

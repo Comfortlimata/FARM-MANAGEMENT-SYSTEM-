@@ -99,10 +99,88 @@ CREATE TABLE IF NOT EXISTS weather (
 );
 
 -- --------------------------------------------------------
--- MODULE: Harvest
+-- MODULE: Finances
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS harvest (
+CREATE TABLE IF NOT EXISTS finances (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type ENUM('income','expense') NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    amount DECIMAL(12,2) NOT NULL,
+    transaction_date DATE NOT NULL,
+    description VARCHAR(255) DEFAULT NULL,
+    reference VARCHAR(100) DEFAULT NULL,
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- --------------------------------------------------------
+-- MODULE: Sales
+-- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    phone VARCHAR(50) DEFAULT NULL,
+    email VARCHAR(150) DEFAULT NULL,
+    address TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT DEFAULT NULL,
+    crop_name VARCHAR(150) NOT NULL,
+    quantity DECIMAL(10,2) NOT NULL,
+    unit VARCHAR(50) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    total_amount DECIMAL(12,2) GENERATED ALWAYS AS (quantity * unit_price) STORED,
+    sale_date DATE NOT NULL,
+    payment_status ENUM('pending','partial','paid') NOT NULL DEFAULT 'pending',
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL
+);
+
+-- --------------------------------------------------------
+-- MODULE: Suppliers
+-- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS suppliers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    contact_person VARCHAR(150) DEFAULT NULL,
+    phone VARCHAR(50) DEFAULT NULL,
+    email VARCHAR(150) DEFAULT NULL,
+    address TEXT DEFAULT NULL,
+    category VARCHAR(100) DEFAULT NULL,
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS purchase_orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    supplier_id INT NOT NULL,
+    item_name VARCHAR(150) NOT NULL,
+    quantity DECIMAL(10,2) NOT NULL,
+    unit VARCHAR(50) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    total_amount DECIMAL(12,2) GENERATED ALWAYS AS (quantity * unit_price) STORED,
+    order_date DATE NOT NULL,
+    delivery_date DATE DEFAULT NULL,
+    status ENUM('pending','delivered','cancelled') NOT NULL DEFAULT 'pending',
+    notes TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id) ON DELETE CASCADE
+);
+
+-- --------------------------------------------------------
+-- MODULE: Harvest
+-- --------------------------------------------------------
     id INT AUTO_INCREMENT PRIMARY KEY,
     crop_name VARCHAR(150) NOT NULL,
     variety VARCHAR(150) DEFAULT NULL,

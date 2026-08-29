@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/config.php';
 require_once '../includes/db.php';
+require_once '../includes/flash.php';
 
 $action = $_GET['action'] ?? 'list';
 $types    = ['tractor','harvester','irrigation','sprayer','vehicle','hand_tool','power_tool','other'];
@@ -30,6 +31,7 @@ if ($action === 'delete' && isset($_GET['id'])) {
     mysqli_stmt_bind_param($stmt, 'i', $_GET['id']);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    flash_set('success', 'Equipment deleted.');
     header('Location: ./');
     exit;
 }
@@ -85,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($action, ['add','edit'])) 
 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        flash_set('success', $action === 'add' ? 'Equipment added.' : 'Equipment updated.');
         header('Location: ./');
         exit;
     }
@@ -113,6 +116,7 @@ require_once '../includes/header.php';
         <h2>Equipment</h2>
         <a href="?action=add" class="btn">+ Add Equipment</a>
     </div>
+    <?= flash_html() ?>
 
     <?php if (empty($items)): ?>
         <p class="empty">No equipment records yet.</p>

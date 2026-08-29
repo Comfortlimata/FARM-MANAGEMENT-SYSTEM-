@@ -22,11 +22,20 @@ $stats = [
     'pest_critical'      => count_query($conn, 'SELECT COUNT(*) FROM pest_disease WHERE severity = "critical" AND status = "active"'),
     'weather_today'      => count_query($conn, 'SELECT COUNT(*) FROM weather WHERE record_date = CURDATE()'),
     'harvest_this_month' => count_query($conn, 'SELECT COUNT(*) FROM harvest WHERE MONTH(harvest_date) = MONTH(CURDATE()) AND YEAR(harvest_date) = YEAR(CURDATE())'),
+    'sales_pending'      => count_query($conn, 'SELECT COUNT(*) FROM sales WHERE payment_status != "paid"'),
+    'suppliers_total'    => count_query($conn, 'SELECT COUNT(*) FROM suppliers'),
+    'orders_pending'     => count_query($conn, 'SELECT COUNT(*) FROM purchase_orders WHERE status = "pending"'),
 ];
 
 // Payroll this month
 $r = mysqli_query($conn, 'SELECT SUM(total_pay) FROM labour WHERE MONTH(work_date) = MONTH(CURDATE()) AND YEAR(work_date) = YEAR(CURDATE())');
 $stats['payroll_month'] = (float)(mysqli_fetch_row($r)[0] ?? 0);
+
+// Net profit/loss
+$r = mysqli_query($conn, 'SELECT type, SUM(amount) as total FROM finances GROUP BY type');
+$fin = [];
+while ($row = mysqli_fetch_assoc($r)) $fin[$row['type']] = $row['total'];
+$stats['net_profit'] = ($fin['income'] ?? 0) - ($fin['expense'] ?? 0);
 
 // Recent pest/disease alerts
 $stmt = mysqli_prepare($conn, 'SELECT name, severity, affected_crop, date_observed FROM pest_disease WHERE status = "active" ORDER BY date_observed DESC LIMIT 5');
@@ -99,6 +108,26 @@ function h(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8')
             <div class="card-value"><?= $stats['harvest_this_month'] ?></div>
             <div class="card-label">Harvests</div>
             <div class="card-sub">This month</div>
+        </a>
+
+        <a href="finances/" class="card <?= $stats['net_profit'] < 0 ? 'card-danger' : '' ?>">
+            <div class="card-value">$<?= number_format(abs($stats['net_profit']), 0) ?></div>
+            <div class="card-label">Net <?= $stats['net_profit'] >= 0 ? 'Profit' : 'Loss' ?></div>
+            <div class="card-sub">All time</div>
+        </a>
+
+        <a href="sales/" class="card <?= $stats['sales_pending'] > 0 ? 'card-warn' : '' ?>">
+            <div class="card-value"><?= $stats['sales_pending'] ?></div>
+            <div class="card-label">Unpaid Sales</div>
+            <div class="card-sub">Pending payment</div>
+        </a>
+
+        <a href="suppliers/" class="card">
+            <div class="card-value"><?= $stats['suppliers_total'] ?></div>
+            <div class="card-label">Suppliers</div>
+            <?php if ($stats['orders_pending'] > 0): ?>
+                <div class="card-sub"><?= $stats['orders_pending'] ?> pending orders</div>
+            <?php endif ?>
         </a>
     </div>
 

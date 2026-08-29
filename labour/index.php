@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/config.php';
 require_once '../includes/db.php';
+require_once '../includes/flash.php';
 
 $action = $_GET['action'] ?? 'list';
 $roles  = ['permanent', 'casual', 'contractor'];
@@ -28,6 +29,7 @@ if ($action === 'delete' && isset($_GET['id'])) {
     mysqli_stmt_bind_param($stmt, 'i', $_GET['id']);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    flash_set('success', 'Record deleted.');
     header('Location: ./');
     exit;
 }
@@ -82,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && in_array($action, ['add', 'edit']))
 
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
+        flash_set('success', $action === 'add' ? 'Record added.' : 'Record updated.');
         header('Location: ./');
         exit;
     }
@@ -112,9 +115,10 @@ require_once '../includes/header.php';
         <h2>Labour</h2>
         <a href="?action=add" class="btn">+ Add Record</a>
     </div>
+    <?= flash_html() ?>
 
-    <?php if (empty($items)): ?>
-        <p class="empty">No labour records yet.</p>
+    <?php if (empty($items)):
+        ?><p class="empty">No labour records yet.</p>
     <?php else: ?>
     <p class="summary">Total Payroll: <strong>$<?= number_format($total_payroll, 2) ?></strong></p>
     <table>
